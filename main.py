@@ -27,7 +27,7 @@ def main():
         if strTime=="00:00":
           dictOfActiveDevices={}
         minutes=dt_now.minute
-        if(minutes%2==0):
+        if(minutes%15==0):
           for row in devicesListReader:
             #subprocess.call(['echo','"'+str(AddrAndName[0])+'"'])
             BDAddr=row[0]
@@ -63,7 +63,7 @@ def main():
                   dictOfActiveDevices.pop(BDAddr)
                   print("afterPop",dictOfActiveDevices)
           l2pingRes=None
-          time.sleep(5)
+          time.sleep(60)
         else:
           time.sleep(30)
 

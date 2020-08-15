@@ -7,6 +7,8 @@ from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
 
 def uploadfunc(Date,location,Name,beginTime,endTime):
+  if location==None:
+    location="\t"
   ID=os.environ.get('calendarID')
   SCOPES = ['https://www.googleapis.com/auth/calendar']
   creds = None
