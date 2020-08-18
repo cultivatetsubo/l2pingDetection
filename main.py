@@ -27,7 +27,7 @@ def main():
         if strTime=="00:00":
           dictOfActiveDevices={}
         minutes=dt_now.minute
-        if(minutes%15==0):
+        if(True):
           for row in devicesListReader:
             #subprocess.call(['echo','"'+str(AddrAndName[0])+'"'])
             BDAddr=row[0]
@@ -44,6 +44,7 @@ def main():
                 print(BDAddr,"in activeList")
                 if dictOfActiveDevices[BDAddr]["endTime"]!=None:
                   dictOfActiveDevices[BDAddr]["endTime"]=None
+                  dictOfActiveDevices[BDAddr]["uploadFlag"]=False
               else:
                 dictOfActiveDevices=addObjOfDetectedInfo(BDAddr,Name,strTime,dictOfActiveDevices)
                 print("add",BDAddr)
@@ -56,7 +57,7 @@ def main():
                 if  dictOfActiveDevices[BDAddr]["uploadFlag"]==False:
                   dictOfActiveDevices[BDAddr]["uploadFlag"]=True
                   dictOfActiveDevices[BDAddr]["endTime"]=strTime
-                  print("on uploadFlag",BDAddr)
+                  print("on uploadFlag",dictOfActiveDevices[BDAddr])
                 else:
                   print("beforePop",dictOfActiveDevices)
                   calenderAPI.uploadfunc(strDate,location,dictOfActiveDevices[BDAddr]["Name"],dictOfActiveDevices[BDAddr]["beginTime"],dictOfActiveDevices[BDAddr]["endTime"])
