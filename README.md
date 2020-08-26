@@ -16,7 +16,7 @@ googlecalendarIDを環境変数に登録します。
 IDが"foo@bar.google.com"でbashで実行する場合、bashrcに  
 export calendarID=foo@bar.google.com  
 を追記します。  
-設置するデバイスの識別子を環境変数に登録します。
+設置するデバイスの識別子を環境変数に登録します。  
 export deviceLocation=foobar  
 
 Bluetooth addressと、その識別子をdevicesList.csvに記入します。 
@@ -27,5 +27,6 @@ dd:ee:ff:XX:XX:XX,fuga
 sudo -E python3 main.py  
 で実行します。
 
+検出されるデバイスは一度接続を確立している必要があります。
 # detailed  
 検出は15分毎に行い、連続で検出に失敗した場合、最初の検出の失敗の時間までの時間を記録します。
