@@ -1,7 +1,5 @@
 # what is this  
-detection  by l2ping ont raspberrypi  
-push in google calendar  
-you have to make pairing at once by rfcomm.  
+l2pingを用いてBluetoothデバイスの検出を行います。
 # environment  
 raspberry pi zero WH
 Distributor ID: Raspbian  
@@ -11,21 +9,24 @@ Codename:       buster
 
 # how to use  
 pip3 install -r requirements.txt  
-you have to create another file, credentials.json.  
+googlecalendarAPIを使うためにcredentials.jsonの作製と使用するgooglecalendarのIDを発行します。  
 
 googlecalendarAPI  
-create credentials.json in this directry following the way.  
-if calendarID  is "foo@bar.google.com", in bashrc,
+googlecalendarIDを環境変数に登録します。
+IDが"foo@bar.google.com"でbashで実行する場合、bashrcに
 export calendarID=foo@bar.google.com  
-
-and if you have decided the location installing the detection device,in bash  
+を追記してください。
+設置するデバイスの識別子を環境変数に登録します。
 export deviceLocation=foobar  
 
-you have to describe the Bluetooth Addresses of devices to detect and the name of the   person having the device in devicesList.csv.  
+Bluetooth addressと、その識別子をdevicesList.csvに記入します。 
 
-aa:bb:cc:XX:XX:XX,foo  
+aa:bb:cc:XX:XX:XX,hoge
+dd:ee:ff:XX:XX:XX,fuga 
 
 sudo -E python3 main.py  
 
+
 # detailed  
 detection by 15 minutes and if continuously fail to detect, it is decided that one having the device has left.
+検出は15分毎に行い、連続で検出に失敗した場合、最初の検出の失敗の時間までの時間を記録します。
