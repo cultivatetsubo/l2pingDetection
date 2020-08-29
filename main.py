@@ -4,12 +4,15 @@ import subprocess
 import datetime
 import time
 import calenderAPI
+import rfcommPairing
 import os
+
 
 
 def addObjOfDetectedInfo(BDAddr,deviceName,detectedTime,dict):
   dict[BDAddr]={"BDAddr":BDAddr,"Name":deviceName,"beginTime":detectedTime,"endTime":None,"uploadFlag":False}
   return dict
+
 def main():
   dictOfActiveDevices={}
   location=os.environ.get('deviceLocation')
