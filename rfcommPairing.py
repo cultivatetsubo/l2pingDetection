@@ -7,16 +7,6 @@ import calenderAPI
 import os
 
 
-def makeCSVLogSucceededPairing():
-  with open('./devicesList.csv') as devices_f:
-    devicesListReader = csv.reader(devices_f)
-    with open('./pairedDevicesLog.csv', 'a') as pairing_f:
-      pairedLogWriter = csv.writer(pairing_f)
-      for deviceRow in devicesListReader:
-        pairedDeviceLog=deviceRow.append(False)
-        print(pairedDeviceLog)
-        pairedLogWriter.writerow(pairedDeviceLog)
-  return
 
 def doRfcommPairing(BDAddr):
   rfcommRes = subprocess.run(['rfcomm connect 0',str(BDAddr)],stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
