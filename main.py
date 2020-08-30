@@ -26,7 +26,7 @@ def doL2ping(BDAddr):
     return False
 
 def doRfcommPairing(BDAddr):
-  rfcommP = subprocess.Popen(['rfcomm connect 0',str(BDAddr)],stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+  rfcommP = subprocess.Popen(['rfcomm','connect','0',str(BDAddr)],stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
   time.sleep(1)
   rfcommP.kill()
   isL2pingRes=doL2ping(BDAddr)
@@ -46,7 +46,7 @@ def main():
         dt_now = datetime.datetime.now()
         strDate=dt_now.strftime('%Y-%m-%d')
         strTime=dt_now.strftime('%H:%M')
-        if strTime=="00:00":
+        if strTime=="23:59":
           for BDAddr in dictOfActiveDevices:
             dictOfActiveDevices[BDAddr]["endTime"]=strTime
             calenderAPI.uploadfunc(strDate,location,dictOfActiveDevices[BDAddr]["Name"],dictOfActiveDevices[BDAddr]["beginTime"],dictOfActiveDevices[BDAddr]["endTime"])
