@@ -4,7 +4,7 @@ import subprocess
 import datetime
 import time
 import calenderAPI
-import rfcommPairing
+# import rfcommPairing
 import os
 
 
@@ -12,6 +12,25 @@ import os
 def addObjOfDetectedInfo(BDAddr,deviceName,detectedTime,dict):
   dict[BDAddr]={"BDAddr":BDAddr,"Name":deviceName,"beginTime":detectedTime,"endTime":None,"uploadFlag":False}
   return dict
+
+def doL2ping(BDAddr):
+  l2pingRes = subprocess.run(['l2ping',str(BDAddr),"-c","3"],stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+  try:
+    failureRate = str(l2pingRes.stdout).split()[-2]
+    failureRate = int(failureRate.split("%")[0])
+  except ValueError:
+    failureRate = 100
+  if(failureRate < 100):
+    return True
+  else:
+    return False
+
+def doRfcommPairing(BDAddr):
+  rfcommP = subprocess.Popen(['rfcomm connect 0',str(BDAddr)],stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+  time.sleep(1)
+  rfcommP.kill()
+  isL2pingRes=doL2ping(BDAddr)
+  return isL2pingRes
 
 def main():
   dictOfActiveDevices={}
@@ -28,6 +47,9 @@ def main():
         strDate=dt_now.strftime('%Y-%m-%d')
         strTime=dt_now.strftime('%H:%M')
         if strTime=="00:00":
+          for BDAddr in dictOfActiveDevices:
+            dictOfActiveDevices[BDAddr]["endTime"]=strTime
+            calenderAPI.uploadfunc(strDate,location,dictOfActiveDevices[BDAddr]["Name"],dictOfActiveDevices[BDAddr]["beginTime"],dictOfActiveDevices[BDAddr]["endTime"])
           dictOfActiveDevices={}
         minutes=dt_now.minute
         if(True):
@@ -35,13 +57,10 @@ def main():
             #subprocess.call(['echo','"'+str(AddrAndName[0])+'"'])
             BDAddr=row[0]
             Name=row[1]
-            l2pingRes = subprocess.run(['l2ping',str(BDAddr),"-c","3"],stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-            try:
-              failureRate = str(l2pingRes.stdout).split()[-2]
-              failureRate = int(failureRate.split("%")[0])
-            except ValueError:
-              failureRate = 100
-            if(failureRate<=30):
+            
+
+            hasSucceededL2ping=doL2ping(BDAddr)
+            if(hasSucceededL2ping):
               print(strTime,BDAddr,"l2pingSuccess")
               if BDAddr in dictOfActiveDevices.keys():
                 print(BDAddr,"in activeList")
