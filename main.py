@@ -57,7 +57,9 @@ def main():
             #subprocess.call(['echo','"'+str(AddrAndName[0])+'"'])
             BDAddr=row[0]
             Name=row[1]
-            
+            shouldDoRfcomm = not(doL2ping(BDAddr))
+            if(shouldDoRfcomm):
+              doRfcommPairing(BDAddr)
 
             hasSucceededL2ping=doL2ping(BDAddr)
             if(hasSucceededL2ping):
